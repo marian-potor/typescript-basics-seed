@@ -129,7 +129,6 @@ pizzaSizes.availableSizes = ['medium', 'large'];
 console.log(pizzaSizes.availableSizes);
 
 //Classes inheritance
-
 class Cookies extends SizesList {
     constructor(readonly name: string, public sizeList:string[]) {
         super(sizeList);
@@ -152,3 +151,45 @@ abstract class Vehicle {
         this.name = name;
     }
 }
+
+
+// interfaces and classes
+interface SizeInterface{
+    // sizeList: string[];  //if sizeList is protected in class ProductSize and can't be declared in interface
+    availableSizes: string[];
+}
+
+abstract class ProductSizes implements SizeInterface{
+    // constructor(public sizeList: string[]){} 
+    constructor(protected sizeList: string[]){}  // private/protected properties can't be defined in interfaces
+    set availableSizes(sizeList: string[]) {
+            this.sizeList=sizeList;
+    }
+    get availableSizes() {
+        return this.sizeList;
+    }
+}
+
+interface Product extends SizeInterface {
+    readonly name: string;
+    changeAvailableSizes(sizes: string[]): void;
+}
+
+class Drink extends ProductSizes implements Product {
+    constructor(readonly name: string, public sizeList:string[]) {
+        super(sizeList);
+    }
+    //this method canges the value of the protected sizeList
+    changeAvailableSizes(size: string[]){
+        this.sizeList = size;
+    }
+}
+
+//static properties and methods
+class Coupon {
+    static allowed = ['Pepperoni', 'Margheria'];
+    static create(percentage: number) {
+        return `Discount coupon for ${percentage}%`;
+    }
+}
+console.log(Coupon.create(20));
